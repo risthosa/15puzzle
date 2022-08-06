@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="15tas.css">
+
+	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+	<script type="text/javascript">
+		function pozisyonKontrol(sakla){
+			var j=0;
+			var sirali = new Array(sakla.length);
+			for(var a=0;a<sirali.length;a++)
+				sirali[a] = sakla[a];
+
+			for(var i = 0 ; i<sirali.length ; i++){
+				while(sirali[i] != i+1){
+					var tmp = sirali[i];
+					sirali[i] = sirali[tmp-1];
+					sirali[tmp-1] = tmp;
+					j++;
+				}
+			}
+
+			if(j%2){
+				//alert("Sıralanamaz!");
+				for(i = 0 ; i < sakla.length - 1 ; i++){ // ----> burada sıralanabilir pozisyona getiriliyor.
+					if(sakla[i] != i+1){
+						var tmp1 = sakla[i];
+						sakla[i] = sakla[tmp1-1];
+						sakla[tmp1-1]= tmp1;
+						break;
+					}
+				}
+			}
+
+			return sakla;
+		}
+
+		function randperm(max){
+			var permDizi = new Array(max);
+
+			for(var i = 0; i<max; i++)
+				permDizi[i] = i + 1;
+			
+			for(var i = 0; i<max; i++){
+				var randKonum = Math.floor(Math.random() * max);
+				var tmp = permDizi[i];
+
+				permDizi[i] = permDizi[randKonum];
+				permDizi[randKonum] = tmp;
+			}
+
+			return pozisyonKontrol(permDizi);
+		}
+
+		function pozisyon(){
+			var dizi = document.getElementsByClassName("hucreler");
+			
+			for(var i = 0; i < dizi.length; i++){
+				dizi[i].style.left = (i % 4) * 70 + "px";
+				dizi[i].style.top = parseInt((i / 4)) * 70 + "px";
+			}
+			
+			var randDizi = randperm(15);
+
+			for(var i = 0; i < 15; i++){
+				dizi[i].innerText = randDizi[i];
+				if(parseInt(dizi[i].innerText)%2 == 0)
+					dizi[i].style.backgroundColor = "#ffffcc";
+			}
+		}
+
+		$(document).ready(function(){
+			var t = 210;
+			var l = 210;
+			var tmp;
+			$(".hucreler").click(function(){
+				if((Math.abs(this.offsetLeft-l) == 70) && (Math.abs(this.offsetTop-t) == 0) || (Math.abs(this.offsetLeft-l) == 0) && (Math.abs(this.offsetTop-t) == 70)){
+					tmp = this.offsetLeft;
+					$(this).animate({left: l + "px"},100);
+					l = tmp;
+					tmp = this.offsetTop;
+					$(this).animate({top: t + "px"},100);
+					t = tmp; 
+				}
+
+				setTimeout(function(){
+					for(var i = 0; i<$(".hucreler").length; i++){
+					var deger = parseInt($(".hucreler")[i].innerText)-1;
+					if(($(".hucreler")[i].offsetLeft == (deger%4) * 70) && ($(".hucreler")[i].offsetTop == (parseInt(deger/4) * 70)))
+						continue;
+					else 
+						break;
+				}
+
+				if (i == $(".hucreler").length)
+					$(".hucreler").css("border-color","#006600");
+				},115);
+			});
+		});
+	</script>
+	
+</head>
+<body onload="pozisyon()">
+	<div id="board">
+		<div class="hucreler">1</div><div class="hucreler">2</div><div class="hucreler">3</div><div class="hucreler">4</div><br>
+		<div class="hucreler">5</div><div class="hucreler">6</div><div class="hucreler">7</div><div class="hucreler">8</div><br>
+		<div class="hucreler">9</div><div class="hucreler">10</div><div class="hucreler">11</div><div class="hucreler">12</div><br>
+		<div class="hucreler">13</div><div class="hucreler">14</div><div class="hucreler">15</div>
+	</div>
+</body>
+</html>

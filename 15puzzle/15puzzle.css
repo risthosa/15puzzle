@@ -1,0 +1,24 @@
+.hucreler{
+	position: absolute;
+	width: 67px;
+	height: 67px;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	border: 3px red solid;
+	font-size: 30px;
+	background-color: white;
+}
+
+#board{
+	width: 283px;
+	height: 283px;
+	border: 20px solid;
+	position: relative;
+	background-color: black;
+	}
+
+	#board div.hucreler:hover{
+		cursor: pointer;
+	}
+		
